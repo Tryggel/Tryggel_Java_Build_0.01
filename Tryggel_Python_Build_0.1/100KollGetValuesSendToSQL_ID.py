@@ -32,7 +32,7 @@ def PlugWattNow (PlugID, Authorization):
 	return jstr['d']['results'][0]['kw']
 	
 	
-def KollSendDataSQL (w,SensorID):
+def KollSendDataSQL (w,SensorID,date):
 	
 	# Open database connection
 	#db = mysql.connector.connect(host='megatrenddb.ctcmpabozwdk.us-west-2.rds.amazonaws.com'
@@ -48,10 +48,10 @@ def KollSendDataSQL (w,SensorID):
 		#DATETIME values in 'YYYY-MM-DD HH:MM:SS' format
 
 		add_reading = ("INSERT INTO `mess_all`.`koll_all` "
-				   "(`w`, `SensorID`) "
-				   "VALUES (%s, %s)")
+				   "(`w`, `SensorID`, `date`) "
+				   "VALUES (%s, %s, %s)")
 					
-		data_readings = (w,SensorID)
+		data_readings = (w,SensorID,date)
 		cursor.execute(add_reading, data_readings)
 
 		# execute SQL query using execute() method.
@@ -78,7 +78,7 @@ def main():
 		print ("%ss\tdone: requesting values." % ((datetime.now() -wait1).total_seconds()))
 		#print ("oDelta%s"%oDelta)
 		wait1 = datetime.now()
-		KollSendDataSQL(w,plugid)
+		KollSendDataSQL(w,plugid,wait1)
 		print ("%ss\tdone: send to SQL." % ((datetime.now() -wait1).total_seconds()))
 		print ('W:%s;\tT:%s;' %(
 			w 	

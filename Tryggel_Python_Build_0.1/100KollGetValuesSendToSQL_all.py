@@ -10,11 +10,10 @@ from datetime import time, date, timedelta, datetime
 #tocken = "Mi45MTExOkVvbnN2ZXJpZ2Ux"
 #plugid = "101171"
 
-def PlugWattNow (PlugID, Authorization):
-	koll_url_live = 'https://stagingapi.eon.se/eonapi/ODataProvider.svc/KwStreamLive?$filter=deviceId eq '
-	nio_sens_id = PlugID
 	
-	url = koll_url_live + nio_sens_id
+def DevicesWattNow (Authorization):
+	koll_url_live = 'https://stagingapi.eon.se/eonapi/ODataProvider.svc/KwStreamLive'	
+	url = koll_url_live
 	res = requests.get(
 			url
 			,headers={
@@ -27,9 +26,9 @@ def PlugWattNow (PlugID, Authorization):
 	jstr = json.dumps(res.json())
 	jstr = json.loads(jstr)
 	
-	print (jstr['d']['results'][0]['kw'])
-	return jstr['d']['results'][0]['kw']
 	
+	return jstr['d']['results']	
+
 	
 def KollSendDataSQL (w,SensorID,date):
 	
@@ -63,34 +62,41 @@ def KollSendDataSQL (w,SensorID,date):
 		patch = "/home/ec2-user/"
 		filename = "sqllogkoll.txt"
 		logfile = open(patch+filename,'a+') 
-		logfile.write ('%s;%s' % (err,time.now()))
+		logfile.write ('%s;%s' % (err,datetime.now()))
 
 def main():
-	tocken = "Mi45MTExOkVvbnN2ZXJpZ2Ux"
-	plugid = "101172"
 	w = 0
 	timewait =0.0
+	#List of plags with respective tokens
+	list_devices = [[101171,101171], [101177, 101176, 101175, 101174]]
+	list_token = ['Mi45MTExOkVvbnN2ZXJpZ2Ux', 'Mi45MTEyOkVvbnN2ZXJpZ2Ux']
+
 	while True:
 		time1 = datetime.now()
+		i = 0
 		wait1 = time1
-		w = PlugWattNow(plugid,tocken)
-		print ("%ss\tdone: requesting values." % ((datetime.now() -wait1).total_seconds()))
-		#print ("oDelta%s"%oDelta)
-		wait1 = datetime.now()
-		KollSendDataSQL(w,plugid,wait1)
-		print ("%ss\tdone: send to SQL." % ((datetime.now() -wait1).total_seconds()))
-		print ('W:%s;\tT:%s;' %(
-			w 	
-			,datetime.now()
-			)
-		)
+		#Call for every token
+		while i < len(list_token): 
+			wait1 = datetime.now()
+			w = DevicesWattNow(list_token[i])
+			print ("%ss\tdone: requesting values." % ((datetime.now() -wait1).total_seconds()))
+			wait1 = datetime.now()
+			for device in w:
+				#Send the values only for devices to SQL
+				if device['deviceId'] in list_devices[i]:
+					KollSendDataSQL(device['kw'],device['deviceId'],wait1)
+			print ("%ss\tdone: send to SQL." % ((datetime.now() -wait1).total_seconds()))
+			i=i+1
+		
+		#Waiting requested time till the next call
 		time2 = datetime.now()
 		timed = time2 - time1
-		timewait = 60 - timed.total_seconds()
+		timewait = 10 - timed.total_seconds()
 		timewait = max(timewait, 0)
 		wait1 = datetime.now()
 		sleep(timewait)
 		print ("%s\tdone: waiting."  % ((datetime.now() -wait1).total_seconds()))
+		
 		
 main()
 

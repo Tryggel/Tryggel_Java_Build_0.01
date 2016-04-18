@@ -26,8 +26,10 @@ def DevicesWattNow (Authorization):
 	jstr = json.dumps(res.json())
 	jstr = json.loads(jstr)
 	
-	
-	return jstr['d']['results']	
+	try:
+		return jstr['d']['results']	
+	except:
+		print("Wrong answer from device API")
 
 	
 def KollSendDataSQL (w,SensorID,date):
@@ -68,7 +70,7 @@ def main():
 	w = 0
 	timewait =0.0
 	#List of plags with respective tokens
-	list_devices = [[101171,101171], [101177, 101176, 101175, 101174]]
+	list_devices = [[101171], [101177, 101176, 101175, 101174]]
 	list_token = ['Mi45MTExOkVvbnN2ZXJpZ2Ux', 'Mi45MTEyOkVvbnN2ZXJpZ2Ux']
 
 	while True:

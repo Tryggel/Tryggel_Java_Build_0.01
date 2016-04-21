@@ -10,28 +10,10 @@ from datetime import time, date, timedelta, datetime
 #tocken = "Mi45MTExOkVvbnN2ZXJpZ2Ux"
 #plugid = "101171"
 
-import os, time
-def set_TZ():
-	os.environ['TZ'] = 'Europe/Berlin'
-	time.tzset()
 	
 def DevicesWattNow (Authorization):
 	koll_url_live = 'https://stagingapi.eon.se/eonapi/ODataProvider.svc/KwStreamLive'	
 	url = koll_url_live
-	try:
-		res = requests.get(
-			url
-			,headers={
-			'Authorization': Authorization,
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-			}
-			,verify=False
-		)
-	
-	except:
-		print("Wrong answer from device API")
-		return 0
 	res = requests.get(
 			url
 			,headers={
@@ -41,7 +23,6 @@ def DevicesWattNow (Authorization):
 			}
 			,verify=False
 	)
-	
 	jstr = json.dumps(res.json())
 	jstr = json.loads(jstr)
 	
@@ -84,10 +65,8 @@ def KollSendDataSQL (w,SensorID,date):
 		filename = "sqllogkoll.txt"
 		logfile = open(patch+filename,'a+') 
 		logfile.write ('%s;%s' % (err,datetime.now()))
-		datetime.now().ToString("%h")
 
 def main():
-	set_TZ()
 	w = 0
 	timewait =0.0
 	#List of plags with respective tokens
@@ -102,15 +81,14 @@ def main():
 		while i < len(list_token): 
 			wait1 = datetime.now()
 			w = DevicesWattNow(list_token[i])
-			if w <> 0:
-				print ("%ss\tdone: requesting values." % ((datetime.now() -wait1).total_seconds()))
-				wait1 = datetime.now()
-				for device in w:
-					#Send the values only for devices to SQL
-					if device['deviceId'] in list_devices[i]:
-						KollSendDataSQL(device['kw'],device['deviceId'],wait1)
-				print ("%ss\tdone: send to SQL." % ((datetime.now() -wait1).total_seconds()))
-				i=i+1
+			print ("%ss\tdone: requesting values." % ((datetime.now() -wait1).total_seconds()))
+			wait1 = datetime.now()
+			for device in w:
+				#Send the values only for devices to SQL
+				if device['deviceId'] in list_devices[i]:
+					KollSendDataSQL(device['kw'],device['deviceId'],wait1)
+			print ("%ss\tdone: send to SQL." % ((datetime.now() -wait1).total_seconds()))
+			i=i+1
 		
 		#Waiting requested time till the next call
 		time2 = datetime.now()

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#
 import json
 import arrow
 import requests
@@ -9,29 +10,30 @@ from datetime import time, date, timedelta, datetime
 
 #tocken = "Mi45MTExOkVvbnN2ZXJpZ2Ux"
 #plugid = "101171"
-
 import os, time
+import sys
+
+def handelError ():
+	e = sys.exc_info()[0]
+	patch = "/home/ec2-user/"
+	filename = "neurio-log.txt"
+	logfile = open(patch+filename,'a+')
+	print ("%s;%s\n" % (e,datetime.now()))
+	logfile.write ("%s;%s\n" % (e,datetime.now()))
+	logfile.close ()
+
+
+
 def set_TZ():
 	os.environ['TZ'] = 'Europe/Berlin'
 	time.tzset()
 	
-def DevicesWattNow (Authorization):
-	koll_url_live = 'https://stagingapi.eon.se/eonapi/ODataProvider.svc/KwStreamLive'	
-	url = koll_url_live
-	try:
-		res = requests.get(
-			url
-			,headers={
-			'Authorization': Authorization,
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-			}
-			,verify=False
-		)
+
+def PlugWattNow (PlugID, Authorization):
+	koll_url_live = 'https://stagingapi.eon.se/eonapi/ODataProvider.svc/KwStreamLive?$filter=deviceId eq '
+	nio_sens_id = PlugID
 	
-	except:
-		print("Wrong answer from device API")
-		return 0
+	url = koll_url_live + nio_sens_id
 	res = requests.get(
 			url
 			,headers={
@@ -41,17 +43,14 @@ def DevicesWattNow (Authorization):
 			}
 			,verify=False
 	)
-	
 	jstr = json.dumps(res.json())
 	jstr = json.loads(jstr)
 	
-	try:
-		return jstr['d']['results']	
-	except:
-		print("Wrong answer from device API")
-
+	print (jstr['d']['results'][0]['kw'])
+	return jstr['d']['results'][0]['kw']
 	
-def KollSendDataSQL (w,SensorID,date):
+	
+def KollSendDataSQL (w,SensorID):
 	
 	# Open database connection
 	#db = mysql.connector.connect(host='megatrenddb.ctcmpabozwdk.us-west-2.rds.amazonaws.com'
@@ -67,10 +66,10 @@ def KollSendDataSQL (w,SensorID,date):
 		#DATETIME values in 'YYYY-MM-DD HH:MM:SS' format
 
 		add_reading = ("INSERT INTO `mess_all`.`koll_all` "
-				   "(`w`, `SensorID`, `datetime`) "
-				   "VALUES (%s, %s, %s)")
+				   "(`w`, `SensorID`) "
+				   "VALUES (%s, %s)")
 					
-		data_readings = (w,SensorID,date)
+		data_readings = (w,SensorID)
 		cursor.execute(add_reading, data_readings)
 
 		# execute SQL query using execute() method.
@@ -84,44 +83,44 @@ def KollSendDataSQL (w,SensorID,date):
 		filename = "sqllogkoll.txt"
 		logfile = open(patch+filename,'a+') 
 		logfile.write ('%s;%s' % (err,datetime.now()))
-		datetime.now().ToString("%h")
 
-def main():
-	set_TZ()
+def getingData():
+	tocken = "Mi45MTExOkVvbnN2ZXJpZ2Ux"
+	plugid = "101171"
 	w = 0
 	timewait =0.0
-	#List of plags with respective tokens
-	list_devices = [[101171], [101177, 101176, 101175, 101174]]
-	list_token = ['Mi45MTExOkVvbnN2ZXJpZ2Ux', 'Mi45MTEyOkVvbnN2ZXJpZ2Ux']
-
 	while True:
 		time1 = datetime.now()
-		i = 0
 		wait1 = time1
-		#Call for every token
-		while i < len(list_token): 
-			wait1 = datetime.now()
-			w = DevicesWattNow(list_token[i])
-			if w <> 0:
-				print ("%ss\tdone: requesting values." % ((datetime.now() -wait1).total_seconds()))
-				wait1 = datetime.now()
-				for device in w:
-					#Send the values only for devices to SQL
-					if device['deviceId'] in list_devices[i]:
-						KollSendDataSQL(device['kw'],device['deviceId'],wait1)
-				print ("%ss\tdone: send to SQL." % ((datetime.now() -wait1).total_seconds()))
-				i=i+1
-		
-		#Waiting requested time till the next call
+		w = PlugWattNow(plugid,tocken)
+		print ("%ss\tdone: requesting values." % ((datetime.now() -wait1).total_seconds()))
+		#print ("oDelta%s"%oDelta)
+		wait1 = datetime.now()
+		KollSendDataSQL(w,plugid)
+		print ("%ss\tdone: send to SQL." % ((datetime.now() -wait1).total_seconds()))
+		print ('W:%s;\tT:%s;' %(
+			w 	
+			,datetime.now()
+			)
+		)
 		time2 = datetime.now()
 		timed = time2 - time1
-		timewait = 10 - timed.total_seconds()
+		timewait = 60 - timed.total_seconds()
 		timewait = max(timewait, 0)
 		wait1 = datetime.now()
 		sleep(timewait)
 		print ("%s\tdone: waiting."  % ((datetime.now() -wait1).total_seconds()))
-		
-		
+
+def main():
+	try:
+		set_TZ()
+		getingData()
+	except: 
+		handelError ()
+		sleep(5)
+		main()
+
+	
 main()
 
 

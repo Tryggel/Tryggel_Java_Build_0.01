@@ -10,10 +10,22 @@ from datetime import time, date, timedelta, datetime
 #tocken = "Mi45MTExOkVvbnN2ZXJpZ2Ux"
 #plugid = "101171"
 
+import sys
 import os, time
 def set_TZ():
 	os.environ['TZ'] = 'Europe/Berlin'
 	time.tzset()
+
+
+def handelError ():
+	e = sys.exc_info()[0]
+	patch = "/home/ec2-user/"
+	filename = "100koll-plug-log.txt"
+	logfile = open(patch+filename,'a+')
+	print ("%s;%s\n" % (e,datetime.now()))
+	logfile.write ("%s;%s\n" % (e,datetime.now()))
+	logfile.close ()
+
 	
 def DevicesWattNow (Authorization):
 	koll_url_live = 'https://stagingapi.eon.se/eonapi/ODataProvider.svc/KwStreamLive'	
@@ -86,7 +98,7 @@ def KollSendDataSQL (w,SensorID,date):
 		logfile.write ('%s;%s' % (err,datetime.now()))
 		datetime.now().ToString("%h")
 
-def main():
+def GettingData():
 	set_TZ()
 	w = 0
 	timewait =0.0
@@ -120,7 +132,15 @@ def main():
 		wait1 = datetime.now()
 		sleep(timewait)
 		print ("%s\tdone: waiting."  % ((datetime.now() -wait1).total_seconds()))
-		
+
+def main():
+	try:
+		set_TZ()
+		GettingData()
+	except: 
+		handelError ()
+		sleep(5)
+		main()	
 		
 main()
 

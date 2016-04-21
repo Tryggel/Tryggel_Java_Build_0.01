@@ -3,10 +3,12 @@ import json
 from time import sleep
 from datetime import time, date, timedelta, datetime
 
-import os, time
+import sys
 
 #from sqlobject import *
 from oauth2client.service_account import ServiceAccountCredentials
+
+import os, time
 
 
 def set_TZ():
@@ -37,6 +39,14 @@ def open_wks ():
 	wks = gc.open("Larm Centralen View").sheet1
 	return wks
 
+	
+def cell_updater (wks, cell_list):
+	try:
+		wks.update_cells(cell_list)	
+	except:
+		print("Google spreadsheet does not asnwer")
+	
+	
 #Updates the wks for the life activities depending on the daytime
 def check_activity (wks):
 	okValue = "OK"
@@ -56,7 +66,7 @@ def check_activity (wks):
 			#if the time already passed, check it as OK
 			if curretHour >= checkTime[i]:
 				oneCell.value = okValue
-				wks.update_cells(cell_list)
+				cell_updater (wks, cell_list)
 			return
 		i = i + 1	
 
@@ -79,7 +89,7 @@ def moving_rows (wks):
 				
 		#Making this cell into the previous cell
 		preCells[oneCell.col] = tempCell
-	wks.update_cells(cell_list)
+	cell_updater (wks, cell_list)
 	
 
 
@@ -104,7 +114,7 @@ def animation (wks):
 	
 	
 	
-def update_cells ():
+def update_cells1 ():
 
 	wks = open_wks ()
 	#Select the list of the cols with Dates
@@ -136,7 +146,7 @@ def update_cells ():
 			preCell = bufCell 
 			print ("updating %s" % preCell)
 		timew = datetime.now()
-		wks.update_cells(cell_list)
+		cell_updater (wks, cell_list)
 		dtime = datetime.now() - timew
 		print ("updating cells: %s" % dtime)
 
@@ -152,9 +162,19 @@ def update_cells ():
 
 
 def main():
-	set_TZ()
-	wks = open_wks ()
-	animation (wks)
+	try:
+		set_TZ()
+		wks = open_wks ()
+		animation (wks)
+	except: 
+		e = sys.exc_info()[0]
+		patch = "/home/ec2-user/"
+		filename = "gs-log.txt"
+		logfile = open(patch+filename,'a+')
+		logfile.write ("%s;%s\n" % (e,datetime.now()))
+		logfile.close ()
+		sleep(5)
+		main()
 	#moving_rows ()
 	#update_cells ()
 

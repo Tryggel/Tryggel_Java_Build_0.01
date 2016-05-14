@@ -142,15 +142,14 @@ def GettingData():
 	#i = 0
 
 def main():
-	try:
-		set_TZ()
-		GettingData()
-	except: 
-		handelError ()
-		sleep(5)
-		main()
-
-
+	while True:
+		try:
+			set_TZ()
+			GettingData()
+		except: 
+			handelError ()
+			sleep(5)
+			
 
 main()
 

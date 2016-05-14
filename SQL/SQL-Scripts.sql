@@ -20,3 +20,4 @@ day(datetime),
 HOUR(datetime),
 minute(datetime),
 round(second(datetime)/60)
+

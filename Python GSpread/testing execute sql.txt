@@ -1,0 +1,32 @@
+def getValues():
+
+try:
+		cnx  = mysql.connector.connect(host='megatrenddb.ctcmpabozwdk.us-west-2.rds.amazonaws.com'
+							,user='tryggel'
+							,password='megatrend15'
+							,database=''
+							)
+
+		# prepare a cursor object using cursor() method
+		cursor = cnx.cursor()
+		
+		get_data = ("SELECT `w` FROM `mess_all`.`koll_all` WHERE sensorID = 101177 AND `datetime` >= `2016-04-21` AND `w` != `0` LIMIT 0, 100000")
+					  ("VALUES (%s)")
+		data_readings = (w)
+		
+		cursor.execute(get_data, data_readings)
+		
+		cursor.close()
+		cnx.close()
+		return data_readings
+		
+	except mysql.connector.Error as err:
+		print("Something went wrong: {}".format(err))
+		patch = "/home/ec2-user/"
+		filename = "sqllogkoll.txt"
+		logfile = open(patch+filename,'a+') 
+		logfile.write ('%s;%s' % (err,time.now()))
+		
+def main():
+
+	print(getValues())

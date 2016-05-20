@@ -44,16 +44,6 @@ def DevicesWattNow (Authorization):
 	except:
 		print("Wrong answer from device API")
 		return 0
-	res = requests.get(
-			url
-			,headers={
-			'Authorization': Authorization,
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-			}
-			,verify=False
-	)
-	
 	jstr = json.dumps(res.json())
 	jstr = json.loads(jstr)
 	
@@ -141,8 +131,7 @@ def main():
 		GettingData()
 	except: 
 		handelError ()
-		sleep(5)	
-
+		sleep(5)
 
 while True: 		
 	main()

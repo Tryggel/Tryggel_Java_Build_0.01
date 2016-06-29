@@ -20,3 +20,17 @@ day(datetime),
 HOUR(datetime),
 minute(datetime),
 round(second(datetime)/60)
+
+SELECT idnew_table, new_tablecol FROM mess_all.neurio_1
+WHERE id = 101177  AND idnew_table >= ( CURDATE() - INTERVAL 90 DAY ) and new_tablecol >0
+GROUP BY 
+day(datetime),
+HOUR(datetime),
+minute(datetime),
+round(second(datetime)/60)
+
+round(HOUR(datetime)/4)
+
+HOUR(idnew_table),
+minute(idnew_table),
+round(second(idnew_table)/60)

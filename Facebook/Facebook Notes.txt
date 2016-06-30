@@ -1,0 +1,45 @@
+
+***Other stuff about facebook
+Profile ID
+
+Instructions for API
+http://stackoverflow.com/questions/3058723/programmatically-getting-an-access-token-for-using-the-facebook-graph-api
+http://nodotcom.org/python-facebook-tutorial.html
+
+
+***Python requirements
+sudo pip uninstall facebook
+sudo pip uninstall facebook-sdk
+sudo pip install facebook-sdk
+
+
+***Python programming
+
+import facebook
+graph = facebook.GraphAPI(access_token='your_token', version='2.2')
+FACEBOOK_APP_ID     = '1182684665116824'
+FACEBOOK_APP_SECRET = '11223e5159b8943406f2f8da8ab1a26e'
+FACEBOOK_PROFILE_ID = '100001637783120'
+FACEBOOK_PROFILE_ID = '1142003479197567'
+
+https://www.facebook.com/dialog/permissions.request?_path=permissions.request&app_id=1182684665116824&redirect_uri=https%3A%2F%2Fwww.facebook.com%2Fconnect%2Flogin_success.html%3Fdisplay%3Dpage&response_type=token&fbconnect=1&perms=manage_pages%2Cstatus_update&from_login=1&m_sess=1&rcount=1
+
+
+https://graph.facebook.com/oauth/access_token?client_id=1182684665116824&client_secret=11223e5159b8943406f2f8da8ab1a26e&grant_type=fb_exchange_token&fb_exchange_token=EAAQzpTtYeJgBAEnGpfNx24BEbkLnwPFanZCHZCXQavO9gmcAORnqvXWQwRO20BlRfCVs3ZCQ6Wv0rtaAONUVAibKHKM7vsIeT619Bl7FE5VqT07ZBcp5BSlXKhztZBiZAZArsSstnZAey56l5sHHZBVgA8G91kN4nbZAHuspP44b1g2AZDZD
+
+Longliving token 
+lt="EAAQzpTtYeJgBACL5yBdtizfBfwr1ZCspf62VGBGwQ5V96EVmPNJ0CRGoI95leVLeZCJ54om2sX22dQP2uygHu0TrmymzsGOAhulyKdzZAg6DBiQ6zPb2QV1PMAEZAntuBKY8XUvseMdAcUgJoNRiZCQoZAs3FOtpUZ"
+
+
+
+cfg = {
+    "page_id"      : FACEBOOK_PROFILE_ID,
+    "access_token" : lt
+	}
+
+  api = get_api(cfg)
+  msg = "Hello, world!"
+  status = api.put_wall_post(msg)
+
+  
+fb_response = facebook_graph.put_wall_post('Hello from Python', profile_id = FACEBOOK_PROFILE_ID)

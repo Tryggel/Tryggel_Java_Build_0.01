@@ -68,7 +68,7 @@ def check_activity (wks):
 				oneCell.value = okValue
 				cell_updater (wks, cell_list)
 			return
-		i = i + 1	
+		i = i + 1
 
 #Just moves the rows down	
 def moving_rows (wks):

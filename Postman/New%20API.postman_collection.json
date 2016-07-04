@@ -1,0 +1,225 @@
+{
+	"id": "cc12ca69-8666-b071-a74d-1872105ca268",
+	"name": "New API",
+	"description": "",
+	"order": [
+		"55fce204-45f9-8dc3-8498-17418df7b444",
+		"7aefe179-9011-9c3e-26c5-ac8f9c249b58",
+		"393ba88a-5fbc-f2fb-feef-a329639c90ea",
+		"a5e09fb7-218b-0ef1-7a67-b07f1a543ab9",
+		"865cf94f-7e75-8dc4-7702-e408dee77f26",
+		"a0fbadbd-0b6b-8d6d-7406-11c3730b91a5",
+		"37d5ba36-6eba-8350-be1f-4018af964039"
+	],
+	"folders": [],
+	"timestamp": 1467117880424,
+	"owner": "419422",
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "37d5ba36-6eba-8350-be1f-4018af964039",
+			"headers": "Authorization: Bearer 99f8da00-bc5c-43ee-96ba-719850760ad7\n",
+			"url": "{{apiOP}}/Devices",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "cc12ca69-8666-b071-a74d-1872105ca268",
+			"data": null,
+			"dataMode": "params",
+			"name": "Provisioned Devices",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1467399513957,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "393ba88a-5fbc-f2fb-feef-a329639c90ea",
+			"headers": "Authorization: Bearer c4051f3a-23e4-46d0-95c3-d7c213f595c1\n",
+			"url": "https://api-nordic.eon.se/neo/api/100koll/v1/OlingoProvider.svc/$metadata",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "cc12ca69-8666-b071-a74d-1872105ca268",
+			"data": null,
+			"dataMode": "params",
+			"name": "MetaData",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1467381027581,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "55fce204-45f9-8dc3-8498-17418df7b444",
+			"headers": "",
+			"url": "https://api-nordic.eon.se/neo/oauth/v2/token",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "authorization_code",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "respones_type",
+					"value": "token",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "100koll",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "code",
+					"value": "GMBzJn1iu0MS357CkIiUfjuB3Mn9YeoP",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "{{client_id}}",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "{{client_secret}}",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1467399370511,
+			"name": "Auth code token copy",
+			"description": "# Dev\n## ddtestclient\n[https://dev-api-nordic.eon.se/neo/oauth/v2/authorization?client\\_id=dd\\_test\\_client&response\\_type=code&scope=twobo\\_test\\_scope+100koll](https://dev-api-nordic.eon.se/neo/oauth/v2/authorization?client_id=dd_test_client&response_type=code&scope=twobo_test_scope+100koll)\n\n## 100koll\n[https://dev-api-nordic.eon.se/neo/oauth/v2/authorization?client\\_id=100koll&response\\_type=code&scope=100koll](https://dev-api-nordic.eon.se/neo/oauth/v2/authorization?client_id=100koll&response_type=code&scope=100koll)\n\n\n\n# QA \n## ddtestclient\n[https://qa-api-nordic.eon.se/neo/oauth/v2/authorization?client\\_id=dd-test-client&response\\_type=code&scope=twobo\\_test\\_scope+100koll](https://qa-api-nordic.eon.se/neo/oauth/v2/authorization?client_id=dd-test-client&response_type=code&scope=twobo_test_scope+100koll)\n\n## 100koll\n[https://qa-api-nordic.eon.se/neo/oauth/v2/authorization?client\\_id=100koll&response\\_type=code&scope=100koll](https://qa-api-nordic.eon.se/neo/oauth/v2/authorization?client_id=100koll&response_type=code&scope=100koll)\n\n\n    \n# Prod\n\n## ddtestclient\n[https://api-nordic.eon.se/neo/oauth/v2/authorization?client\\_id=dd-test-client&response\\_type=code&scope=twobo\\_test\\_scope+100koll](https://api-nordic.eon.se/neo/oauth/v2/authorization?client_id=dd-test-client&response_type=code&scope=twobo_test_scope+100koll)\n\n## 100koll\n[https://api-nordic.eon.se/neo/oauth/v2/authorization?client\\_id=100koll&response\\_type=code&scope=100koll](https://api-nordic.eon.se/neo/oauth/v2/authorization?client_id=100koll&response_type=code&scope=100koll)\n\n\n    Username: 3259358\n    Password: Eloise1993\n\n",
+			"collectionId": "cc12ca69-8666-b071-a74d-1872105ca268"
+		},
+		{
+			"id": "7aefe179-9011-9c3e-26c5-ac8f9c249b58",
+			"headers": "",
+			"url": "https://{{host}}/neo/oauth/v2/token",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "refresh_token",
+					"value": "daeeadea-73db-475d-8511-f90ece98c84c",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "{{client_id}}",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "{{client_secret}}",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "refresh_token",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "100koll",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1467271667136,
+			"name": "Refresh token",
+			"description": "",
+			"collectionId": "cc12ca69-8666-b071-a74d-1872105ca268",
+			"responses": []
+		},
+		{
+			"id": "865cf94f-7e75-8dc4-7702-e408dee77f26",
+			"headers": "Authorization: Bearer c4051f3a-23e4-46d0-95c3-d7c213f595c1\n",
+			"url": "{{apiOP}}/Devices('d2d51019-c4d7-44b8-a422-e79cec51264c')/Features('d2d51019-c4d7-44b8-a422-e79cec51264c')/EnergyReader",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1467609675701,
+			"name": "EnergyReader",
+			"description": "",
+			"collectionId": "cc12ca69-8666-b071-a74d-1872105ca268",
+			"responses": []
+		},
+		{
+			"id": "a0fbadbd-0b6b-8d6d-7406-11c3730b91a5",
+			"headers": "Authorization: Bearer 99f8da00-bc5c-43ee-96ba-719850760ad7\n",
+			"url": "https://api-nordic.eon.se/neo/api/100koll/v1/rest/system/provisionDevice?locationId=c4afaf50-e6f6-440f-85d0-95a1d05431cf&availableDeviceId=a1e86a16-344c-4a6d-b083-d3c9bcc4c2ef",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "cc12ca69-8666-b071-a74d-1872105ca268",
+			"data": null,
+			"dataMode": "params",
+			"name": "Provisioning of device",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1467399423967,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "a5e09fb7-218b-0ef1-7a67-b07f1a543ab9",
+			"headers": "Authorization: Bearer c4051f3a-23e4-46d0-95c3-d7c213f595c1\n",
+			"url": "{{apiOP}}/AvailableDevices",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "cc12ca69-8666-b071-a74d-1872105ca268",
+			"data": null,
+			"dataMode": "params",
+			"name": "AvailableDevices",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1467382339524,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}

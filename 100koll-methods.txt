@@ -1,0 +1,783 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:DataServices m:DataServiceVersion="1.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+        <Schema Namespace="enterNamespace" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Setting">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="customerId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="userId" Type="Edm.String"/>
+                <Property Name="uiDeviceId" Type="Edm.String"/>
+                <Property Name="key" Type="Edm.String"/>
+                <Property Name="value" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Dimmer">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="connectionState" Type="Edm.String"/>
+                <Property Name="isActive" Type="Edm.Boolean"/>
+                <Property Name="isActiveInternal" Type="Edm.Boolean"/>
+                <Property Name="dimmerLevel" Type="Edm.Int32"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="BasicEventLog">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="productId" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="text" Type="Edm.String"/>
+                <Property Name="eventDateTimeUTC" Type="Edm.DateTimeOffset"/>
+                <Property Name="eventType" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="DefaultPlacement">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="placement" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="KwhStreamHistorical">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="kwh" Type="Edm.Double"/>
+                <Property Name="cost" Type="Edm.Double"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="productId" Type="Edm.String"/>
+                <Property Name="timestamp" Type="Edm.DateTimeOffset"/>
+            </EntityType>
+            <EntityType Name="Picture" m:HasStream="true">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="VerifiedHistoryData">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="date" Type="Edm.DateTimeOffset"/>
+                <Property Name="kwhConsumed" Type="Edm.Double"/>
+                <Property Name="cost" Type="Edm.Double"/>
+            </EntityType>
+            <EntityType Name="ProductCategory">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="dimmable" Type="Edm.Boolean"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="Contact">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="phoneNumber" Type="Edm.String"/>
+                <Property Name="pictureLastChangedOn" Type="Edm.DateTimeOffset"/>
+                <Property Name="pictureId" Type="Edm.String"/>
+                <NavigationProperty Name="Pictures" Relationship="enterNamespace.ContactPicture" FromRole="Contact" ToRole="Picture"/>
+            </EntityType>
+            <EntityType Name="Camera">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="qualitySetting" Type="Edm.String"/>
+                <Property Name="online" Type="Edm.Boolean"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Device">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="placementId" Type="Edm.String"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="key" Type="Edm.String"/>
+                <Property Name="provisioningStatus" Type="Edm.String"/>
+                <NavigationProperty Name="Features" Relationship="enterNamespace.DeviceFeature" FromRole="Device" ToRole="Feature"/>
+            </EntityType>
+            <EntityType Name="SmokeDetector">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="EnergyReader">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="kWLive" Type="enterNamespace.KwLiveValue"/>
+            </EntityType>
+            <EntityType Name="AlarmPanel">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="panelStatus" Type="Edm.String"/>
+                <Property Name="setupStatus" Type="Edm.String"/>
+                <Property Name="online" Type="Edm.Boolean"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="MotionDetector">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="motionDetected" Type="Edm.DateTimeOffset"/>
+                <Property Name="priority" Type="Edm.String"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Delegation">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="tags" Type="Edm.String"/>
+                <Property Name="created" Type="Edm.DateTimeOffset"/>
+                <Property Name="acceptExpires" Type="Edm.DateTimeOffset"/>
+                <Property Name="masterAccount" Type="Edm.String"/>
+                <Property Name="delegateAccount" Type="Edm.String"/>
+                <Property Name="phoneNumber" Type="Edm.String"/>
+                <Property Name="password" Type="Edm.String"/>
+                <Property Name="accepted" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="ScheduleTime">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="scheduleId" Type="Edm.String"/>
+                <Property Name="actions" Type="Edm.String"/>
+                <Property Name="when" Type="Edm.String"/>
+                <Property Name="weekDaySet" Type="Edm.String"/>
+                <Property Name="deletedAt" Type="Edm.DateTimeOffset"/>
+                <Property Name="tag" Type="Edm.String"/>
+                <Property Name="scheduleStart" Type="Edm.Boolean"/>
+                <Property Name="validated" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="BatteryIndicator">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="lowBattery" Type="Edm.Boolean"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Placement">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="placement" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Product">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="category" Type="Edm.String"/>
+                <Property Name="activeDeviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="lastConnected" Type="Edm.DateTimeOffset"/>
+                <Property Name="placementId" Type="Edm.String"/>
+                <Property Name="productType" Type="Edm.String"/>
+                <Property Name="lastUsedTimer" Type="Edm.String"/>
+                <NavigationProperty Name="Features" Relationship="enterNamespace.ProductFeature" FromRole="Product" ToRole="Feature"/>
+            </EntityType>
+            <EntityType Name="WifiSetup">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <NavigationProperty Name="WifiSettings" Relationship="enterNamespace.WifiSetupWifiSetting" FromRole="WifiSetup" ToRole="WifiSetting"/>
+            </EntityType>
+            <EntityType Name="Invoice">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="customerId" Type="Edm.String"/>
+                <Property Name="dueDateUTC" Type="Edm.DateTimeOffset"/>
+                <Property Name="amount" Type="Edm.Double"/>
+                <Property Name="status" Type="Edm.Int32"/>
+                <Property Name="currencyCode" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="User">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="lastKnownLocationId" Type="Edm.String"/>
+                <Property Name="locationStatus" Type="Edm.String"/>
+                <Property Name="geofencingType" Type="Edm.String"/>
+                <Property Name="mute" Type="Edm.Boolean"/>
+                <Property Name="vacation" Type="Edm.Boolean"/>
+                <Property Name="pictureLastChangedOn" Type="Edm.DateTimeOffset"/>
+                <Property Name="phoneNumber" Type="Edm.String"/>
+                <Property Name="email" Type="Edm.String"/>
+                <Property Name="alias" Type="Edm.String"/>
+                <Property Name="delegationId" Type="Edm.Int32"/>
+                <Property Name="setupStatus" Type="Edm.String"/>
+                <Property Name="pictureId" Type="Edm.String"/>
+                <Property Name="geofencingDevice" Type="enterNamespace.GeofencingDevice"/>
+                <NavigationProperty Name="Pictures" Relationship="enterNamespace.UserPicture" FromRole="User" ToRole="Picture"/>
+            </EntityType>
+            <EntityType Name="KwStreamLive">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="kw" Type="Edm.Double"/>
+                <Property Name="cost" Type="Edm.Double"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="productId" Type="Edm.String"/>
+                <Property Name="timestamp" Type="Edm.DateTimeOffset"/>
+            </EntityType>
+            <EntityType Name="WifiSetting">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="wirelessNetwork" Type="enterNamespace.WirelessNetwork"/>
+            </EntityType>
+            <EntityType Name="LeakageDetector">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="FeatureProfile">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="productCode" Type="Edm.String"/>
+                <Property Name="featurePackageCode" Type="Edm.String"/>
+                <Property Name="featureProfileCode" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="delegated" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="OpticalReader">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="connectionState" Type="Edm.String"/>
+                <Property Name="impKwh" Type="Edm.Int32"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="kWLive" Type="enterNamespace.KwLiveValue"/>
+            </EntityType>
+            <EntityType Name="ThresholdAlert">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="productId" Type="Edm.String"/>
+                <Property Name="thresholdValue" Type="Edm.Double"/>
+                <Property Name="intervalType" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="ProductAnalytic">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="productId" Type="Edm.String"/>
+                <Property Name="computationDate" Type="Edm.DateTimeOffset"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="value" Type="Edm.Double"/>
+            </EntityType>
+            <EntityType Name="Customer">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="key" Type="Edm.String"/>
+                <NavigationProperty Name="Settings" Relationship="enterNamespace.CustomerSetting" FromRole="Customer" ToRole="Setting"/>
+            </EntityType>
+            <EntityType Name="Schedule">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="productId" Type="Edm.String"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="isActive" Type="Edm.Boolean"/>
+                <Property Name="deletedAt" Type="Edm.DateTimeOffset"/>
+            </EntityType>
+            <EntityType Name="Feature">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <NavigationProperty Name="BatteryIndicator" Relationship="enterNamespace.FeatureBatteryIndicator" FromRole="Feature" ToRole="BatteryIndicator"/>
+                <NavigationProperty Name="Camera" Relationship="enterNamespace.FeatureCamera" FromRole="Feature" ToRole="Camera"/>
+                <NavigationProperty Name="AlarmPanel" Relationship="enterNamespace.FeatureAlarmPanel" FromRole="Feature" ToRole="AlarmPanel"/>
+                <NavigationProperty Name="EnergyReader" Relationship="enterNamespace.FeatureEnergyReader" FromRole="Feature" ToRole="EnergyReader"/>
+                <NavigationProperty Name="BinarySwitch" Relationship="enterNamespace.FeatureBinarySwitch" FromRole="Feature" ToRole="BinarySwitch"/>
+                <NavigationProperty Name="LeakageDetector" Relationship="enterNamespace.FeatureLeakageDetector" FromRole="Feature" ToRole="LeakageDetector"/>
+                <NavigationProperty Name="OpticalReader" Relationship="enterNamespace.FeatureOpticalReader" FromRole="Feature" ToRole="OpticalReader"/>
+                <NavigationProperty Name="WifiSetup" Relationship="enterNamespace.FeatureWifiSetup" FromRole="Feature" ToRole="WifiSetup"/>
+                <NavigationProperty Name="MotionDetector" Relationship="enterNamespace.FeatureMotionDetector" FromRole="Feature" ToRole="MotionDetector"/>
+                <NavigationProperty Name="Dimmer" Relationship="enterNamespace.FeatureDimmer" FromRole="Feature" ToRole="Dimmer"/>
+                <NavigationProperty Name="SmokeDetector" Relationship="enterNamespace.FeatureSmokeDetector" FromRole="Feature" ToRole="SmokeDetector"/>
+                <NavigationProperty Name="MagnetContact" Relationship="enterNamespace.FeatureMagnetContact" FromRole="Feature" ToRole="MagnetContact"/>
+            </EntityType>
+            <EntityType Name="DefaultProductCategory">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="dimmable" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="Event">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="deviceName" Type="Edm.String"/>
+                <Property Name="placementName" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="productId" Type="Edm.String"/>
+                <Property Name="productName" Type="Edm.String"/>
+                <Property Name="triggeredAt" Type="Edm.DateTimeOffset"/>
+                <Property Name="category" Type="Edm.String"/>
+                <Property Name="eventType" Type="Edm.String"/>
+                <Property Name="priority" Type="Edm.Int32"/>
+                <Property Name="byUserId" Type="Edm.String"/>
+                <Property Name="byUser" Type="Edm.String"/>
+                <Property Name="status" Type="Edm.String"/>
+                <Property Name="comment" Type="Edm.String"/>
+                <Property Name="luUserId" Type="Edm.String"/>
+                <Property Name="luUserName" Type="Edm.String"/>
+                <Property Name="luAt" Type="Edm.DateTimeOffset"/>
+                <Property Name="parentId" Type="Edm.String"/>
+                <Property Name="sequenceId" Type="Edm.Int64"/>
+                <Property Name="deviceType" Type="Edm.String"/>
+                <Property Name="colorCode" Type="Edm.String"/>
+                <Property Name="modificationCacheCode" Type="Edm.String"/>
+                <Property Name="showInEventList" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="Validation">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="conflictingTags" Type="Edm.String"/>
+                <Property Name="conflictingTimerDeviceId" Type="Edm.String"/>
+                <Property Name="conflictingScheduleTimeTag" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="MagnetContact">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="priority" Type="Edm.String"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="magnetContactStatus" Type="enterNamespace.MagnetContactStatus"/>
+            </EntityType>
+            <EntityType Name="Location">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="walkTestExpiresOn" Type="Edm.DateTimeOffset"/>
+                <Property Name="tariff" Type="Edm.Double"/>
+                <Property Name="agreementType" Type="Edm.String"/>
+                <Property Name="impKwh" Type="Edm.Int32"/>
+                <Property Name="podNumber" Type="Edm.String"/>
+                <Property Name="timeZone" Type="Edm.String"/>
+                <Property Name="geofencing" Type="enterNamespace.Geofencing"/>
+                <Property Name="address" Type="enterNamespace.Address"/>
+                <NavigationProperty Name="Products" Relationship="enterNamespace.LocationProduct" FromRole="Location" ToRole="Product"/>
+                <NavigationProperty Name="Contacts" Relationship="enterNamespace.LocationContact" FromRole="Location" ToRole="Contact"/>
+                <NavigationProperty Name="Devices" Relationship="enterNamespace.LocationDevice" FromRole="Location" ToRole="Device"/>
+                <NavigationProperty Name="Users" Relationship="enterNamespace.LocationUser" FromRole="Location" ToRole="User"/>
+                <NavigationProperty Name="Events" Relationship="enterNamespace.LocationEvent" FromRole="Location" ToRole="Event"/>
+            </EntityType>
+            <EntityType Name="CustomerAddress">
+                <Key>
+                    <PropertyRef Name="pod"/>
+                </Key>
+                <Property Name="pod" Type="Edm.String" Nullable="false"/>
+                <Property Name="street" Type="Edm.String"/>
+                <Property Name="postcode" Type="Edm.String"/>
+                <Property Name="city" Type="Edm.String"/>
+                <Property Name="customerType" Type="Edm.String"/>
+                <Property Name="impKwh" Type="Edm.Int32"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="DeviceTimer">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="startActions" Type="Edm.String"/>
+                <Property Name="endActions" Type="Edm.String"/>
+                <Property Name="when" Type="Edm.String"/>
+                <Property Name="triggerTimeEndActions" Type="Edm.DateTimeOffset"/>
+                <Property Name="remainingTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="validated" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="LocationTrend">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="locationId" Type="Edm.String"/>
+                <Property Name="value" Type="Edm.Int32"/>
+                <Property Name="expiresOn" Type="Edm.DateTimeOffset"/>
+            </EntityType>
+            <EntityType Name="AvailableDevice">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="modelName" Type="Edm.String"/>
+                <Property Name="prodrevision" Type="Edm.String"/>
+                <Property Name="macId" Type="Edm.String"/>
+                <Property Name="serialNumber" Type="Edm.String"/>
+                <Property Name="mfgDate" Type="Edm.String"/>
+                <Property Name="failedInstallation" Type="Edm.DateTimeOffset"/>
+                <Property Name="provisioned" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="BinarySwitch">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="connectionState" Type="Edm.String"/>
+                <Property Name="isOn" Type="Edm.Boolean"/>
+                <Property Name="id" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String"/>
+                <Property Name="deviceId" Type="Edm.String"/>
+                <Property Name="locationId" Type="Edm.String"/>
+            </EntityType>
+            <ComplexType Name="WirelessNetwork">
+                <Property Name="SSID" Type="Edm.String"/>
+                <Property Name="AUTH" Type="Edm.String"/>
+                <Property Name="encryption" Type="Edm.String"/>
+                <Property Name="channel" Type="Edm.String"/>
+                <Property Name="mode" Type="Edm.String"/>
+                <Property Name="security" Type="Edm.String"/>
+                <Property Name="signal" Type="Edm.String"/>
+                <Property Name="BSSID" Type="Edm.String"/>
+                <Property Name="wps" Type="Edm.String"/>
+            </ComplexType>
+            <ComplexType Name="Address">
+                <Property Name="street1" Type="Edm.String"/>
+                <Property Name="street2" Type="Edm.String"/>
+                <Property Name="city" Type="Edm.String"/>
+                <Property Name="postalCode" Type="Edm.String"/>
+                <Property Name="country" Type="Edm.String"/>
+            </ComplexType>
+            <ComplexType Name="Geofencing">
+                <Property Name="longitude" Type="Edm.Double"/>
+                <Property Name="latitude" Type="Edm.Double"/>
+                <Property Name="radius" Type="Edm.Int32"/>
+                <Property Name="SSID" Type="Edm.String"/>
+            </ComplexType>
+            <ComplexType Name="MagnetContactStatus">
+                <Property Name="magnetContactStatus" Type="Edm.String"/>
+                <Property Name="eventDateTime" Type="Edm.DateTimeOffset"/>
+            </ComplexType>
+            <ComplexType Name="GeofencingDevice">
+                <Property Name="uniqueId" Type="Edm.String"/>
+                <Property Name="name" Type="Edm.String"/>
+            </ComplexType>
+            <ComplexType Name="KwLiveValue">
+                <Property Name="kW" Type="Edm.Double"/>
+                <Property Name="costPerHour" Type="Edm.Double"/>
+                <Property Name="sampledAt" Type="Edm.DateTimeOffset"/>
+            </ComplexType>
+            <Association Name="FeatureCamera">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.Camera" Multiplicity="*" Role="Camera"/>
+            </Association>
+            <Association Name="FeatureBatteryIndicator">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.BatteryIndicator" Multiplicity="*" Role="BatteryIndicator"/>
+            </Association>
+            <Association Name="CustomerSetting">
+                <End Type="enterNamespace.Customer" Multiplicity="1" Role="Customer"/>
+                <End Type="enterNamespace.Setting" Multiplicity="*" Role="Setting"/>
+            </Association>
+            <Association Name="FeatureEnergyReader">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.EnergyReader" Multiplicity="*" Role="EnergyReader"/>
+            </Association>
+            <Association Name="FeatureSmokeDetector">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.SmokeDetector" Multiplicity="*" Role="SmokeDetector"/>
+            </Association>
+            <Association Name="FeatureOpticalReader">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.OpticalReader" Multiplicity="*" Role="OpticalReader"/>
+            </Association>
+            <Association Name="FeatureWifiSetup">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.WifiSetup" Multiplicity="*" Role="WifiSetup"/>
+            </Association>
+            <Association Name="LocationEvent">
+                <End Type="enterNamespace.Location" Multiplicity="1" Role="Location"/>
+                <End Type="enterNamespace.Event" Multiplicity="*" Role="Event"/>
+            </Association>
+            <Association Name="WifiSetupWifiSetting">
+                <End Type="enterNamespace.WifiSetup" Multiplicity="1" Role="WifiSetup"/>
+                <End Type="enterNamespace.WifiSetting" Multiplicity="*" Role="WifiSetting"/>
+            </Association>
+            <Association Name="FeatureMotionDetector">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.MotionDetector" Multiplicity="*" Role="MotionDetector"/>
+            </Association>
+            <Association Name="FeatureDimmer">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.Dimmer" Multiplicity="*" Role="Dimmer"/>
+            </Association>
+            <Association Name="ProductFeature">
+                <End Type="enterNamespace.Product" Multiplicity="1" Role="Product"/>
+                <End Type="enterNamespace.Feature" Multiplicity="*" Role="Feature"/>
+            </Association>
+            <Association Name="FeatureAlarmPanel">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.AlarmPanel" Multiplicity="*" Role="AlarmPanel"/>
+            </Association>
+            <Association Name="UserPicture">
+                <End Type="enterNamespace.User" Multiplicity="1" Role="User"/>
+                <End Type="enterNamespace.Picture" Multiplicity="*" Role="Picture"/>
+            </Association>
+            <Association Name="LocationUser">
+                <End Type="enterNamespace.Location" Multiplicity="1" Role="Location"/>
+                <End Type="enterNamespace.User" Multiplicity="*" Role="User"/>
+            </Association>
+            <Association Name="ContactPicture">
+                <End Type="enterNamespace.Contact" Multiplicity="1" Role="Contact"/>
+                <End Type="enterNamespace.Picture" Multiplicity="*" Role="Picture"/>
+            </Association>
+            <Association Name="FeatureMagnetContact">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.MagnetContact" Multiplicity="*" Role="MagnetContact"/>
+            </Association>
+            <Association Name="FeatureBinarySwitch">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.BinarySwitch" Multiplicity="*" Role="BinarySwitch"/>
+            </Association>
+            <Association Name="FeatureLeakageDetector">
+                <End Type="enterNamespace.Feature" Multiplicity="1" Role="Feature"/>
+                <End Type="enterNamespace.LeakageDetector" Multiplicity="*" Role="LeakageDetector"/>
+            </Association>
+            <Association Name="DeviceFeature">
+                <End Type="enterNamespace.Device" Multiplicity="1" Role="Device"/>
+                <End Type="enterNamespace.Feature" Multiplicity="*" Role="Feature"/>
+            </Association>
+            <Association Name="LocationContact">
+                <End Type="enterNamespace.Location" Multiplicity="1" Role="Location"/>
+                <End Type="enterNamespace.Contact" Multiplicity="*" Role="Contact"/>
+            </Association>
+            <Association Name="LocationDevice">
+                <End Type="enterNamespace.Location" Multiplicity="1" Role="Location"/>
+                <End Type="enterNamespace.Device" Multiplicity="*" Role="Device"/>
+            </Association>
+            <Association Name="LocationProduct">
+                <End Type="enterNamespace.Location" Multiplicity="1" Role="Location"/>
+                <End Type="enterNamespace.Product" Multiplicity="*" Role="Product"/>
+            </Association>
+            <EntityContainer Name="Container1" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="MotionDetectors" EntityType="enterNamespace.MotionDetector"/>
+                <EntitySet Name="Pictures" EntityType="enterNamespace.Picture"/>
+                <EntitySet Name="DefaultProductCategories" EntityType="enterNamespace.DefaultProductCategory"/>
+                <EntitySet Name="Delegations" EntityType="enterNamespace.Delegation"/>
+                <EntitySet Name="Schedules" EntityType="enterNamespace.Schedule"/>
+                <EntitySet Name="Products" EntityType="enterNamespace.Product"/>
+                <EntitySet Name="ThresholdAlerts" EntityType="enterNamespace.ThresholdAlert"/>
+                <EntitySet Name="VerifiedHistoryDatas" EntityType="enterNamespace.VerifiedHistoryData"/>
+                <EntitySet Name="Dimmers" EntityType="enterNamespace.Dimmer"/>
+                <EntitySet Name="BatteryIndicators" EntityType="enterNamespace.BatteryIndicator"/>
+                <EntitySet Name="Invoices" EntityType="enterNamespace.Invoice"/>
+                <EntitySet Name="Users" EntityType="enterNamespace.User"/>
+                <EntitySet Name="Devices" EntityType="enterNamespace.Device"/>
+                <EntitySet Name="ScheduleTimes" EntityType="enterNamespace.ScheduleTime"/>
+                <EntitySet Name="Validations" EntityType="enterNamespace.Validation"/>
+                <EntitySet Name="LocationTrends" EntityType="enterNamespace.LocationTrend"/>
+                <EntitySet Name="ProductCategories" EntityType="enterNamespace.ProductCategory"/>
+                <EntitySet Name="Events" EntityType="enterNamespace.Event"/>
+                <EntitySet Name="AlarmPanels" EntityType="enterNamespace.AlarmPanel"/>
+                <EntitySet Name="KwhStreamHistoricals" EntityType="enterNamespace.KwhStreamHistorical"/>
+                <EntitySet Name="BinarySwitches" EntityType="enterNamespace.BinarySwitch"/>
+                <EntitySet Name="BasicEventLogs" EntityType="enterNamespace.BasicEventLog"/>
+                <EntitySet Name="Features" EntityType="enterNamespace.Feature"/>
+                <EntitySet Name="FeatureProfiles" EntityType="enterNamespace.FeatureProfile"/>
+                <EntitySet Name="OpticalReaders" EntityType="enterNamespace.OpticalReader"/>
+                <EntitySet Name="Settings" EntityType="enterNamespace.Setting"/>
+                <EntitySet Name="MagnetContacts" EntityType="enterNamespace.MagnetContact"/>
+                <EntitySet Name="CustomerAddresses" EntityType="enterNamespace.CustomerAddress"/>
+                <EntitySet Name="EnergyReaders" EntityType="enterNamespace.EnergyReader"/>
+                <EntitySet Name="ProductAnalytics" EntityType="enterNamespace.ProductAnalytic"/>
+                <EntitySet Name="LeakageDetectors" EntityType="enterNamespace.LeakageDetector"/>
+                <EntitySet Name="DefaultPlacements" EntityType="enterNamespace.DefaultPlacement"/>
+                <EntitySet Name="AvailableDevices" EntityType="enterNamespace.AvailableDevice"/>
+                <EntitySet Name="WifiSettings" EntityType="enterNamespace.WifiSetting"/>
+                <EntitySet Name="Locations" EntityType="enterNamespace.Location"/>
+                <EntitySet Name="KwStreamLives" EntityType="enterNamespace.KwStreamLive"/>
+                <EntitySet Name="Contacts" EntityType="enterNamespace.Contact"/>
+                <EntitySet Name="Customers" EntityType="enterNamespace.Customer"/>
+                <EntitySet Name="DeviceTimers" EntityType="enterNamespace.DeviceTimer"/>
+                <EntitySet Name="Placements" EntityType="enterNamespace.Placement"/>
+                <EntitySet Name="Cameras" EntityType="enterNamespace.Camera"/>
+                <EntitySet Name="SmokeDetectors" EntityType="enterNamespace.SmokeDetector"/>
+                <EntitySet Name="WifiSetups" EntityType="enterNamespace.WifiSetup"/>
+                <AssociationSet Name="FeatureCameraSet" Association="enterNamespace.FeatureCamera">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="Cameras" Role="Camera"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureBatteryIndicatorSet" Association="enterNamespace.FeatureBatteryIndicator">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="BatteryIndicators" Role="BatteryIndicator"/>
+                </AssociationSet>
+                <AssociationSet Name="CustomerSettingSet" Association="enterNamespace.CustomerSetting">
+                    <End EntitySet="Customers" Role="Customer"/>
+                    <End EntitySet="Settings" Role="Setting"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureEnergyReaderSet" Association="enterNamespace.FeatureEnergyReader">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="EnergyReaders" Role="EnergyReader"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureSmokeDetectorSet" Association="enterNamespace.FeatureSmokeDetector">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="SmokeDetectors" Role="SmokeDetector"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureOpticalReaderSet" Association="enterNamespace.FeatureOpticalReader">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="OpticalReaders" Role="OpticalReader"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureWifiSetupSet" Association="enterNamespace.FeatureWifiSetup">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="WifiSetups" Role="WifiSetup"/>
+                </AssociationSet>
+                <AssociationSet Name="LocationEventSet" Association="enterNamespace.LocationEvent">
+                    <End EntitySet="Locations" Role="Location"/>
+                    <End EntitySet="Events" Role="Event"/>
+                </AssociationSet>
+                <AssociationSet Name="WifiSetupWifiSettingSet" Association="enterNamespace.WifiSetupWifiSetting">
+                    <End EntitySet="WifiSetups" Role="WifiSetup"/>
+                    <End EntitySet="WifiSettings" Role="WifiSetting"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureMotionDetectorSet" Association="enterNamespace.FeatureMotionDetector">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="MotionDetectors" Role="MotionDetector"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureDimmerSet" Association="enterNamespace.FeatureDimmer">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="Dimmers" Role="Dimmer"/>
+                </AssociationSet>
+                <AssociationSet Name="ProductFeatureSet" Association="enterNamespace.ProductFeature">
+                    <End EntitySet="Products" Role="Product"/>
+                    <End EntitySet="Features" Role="Feature"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureAlarmPanelSet" Association="enterNamespace.FeatureAlarmPanel">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="AlarmPanels" Role="AlarmPanel"/>
+                </AssociationSet>
+                <AssociationSet Name="UserPictureSet" Association="enterNamespace.UserPicture">
+                    <End EntitySet="Users" Role="User"/>
+                    <End EntitySet="Pictures" Role="Picture"/>
+                </AssociationSet>
+                <AssociationSet Name="LocationUserSet" Association="enterNamespace.LocationUser">
+                    <End EntitySet="Locations" Role="Location"/>
+                    <End EntitySet="Users" Role="User"/>
+                </AssociationSet>
+                <AssociationSet Name="ContactPictureSet" Association="enterNamespace.ContactPicture">
+                    <End EntitySet="Contacts" Role="Contact"/>
+                    <End EntitySet="Pictures" Role="Picture"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureMagnetContactSet" Association="enterNamespace.FeatureMagnetContact">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="MagnetContacts" Role="MagnetContact"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureBinarySwitchSet" Association="enterNamespace.FeatureBinarySwitch">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="BinarySwitches" Role="BinarySwitch"/>
+                </AssociationSet>
+                <AssociationSet Name="FeatureLeakageDetectorSet" Association="enterNamespace.FeatureLeakageDetector">
+                    <End EntitySet="Features" Role="Feature"/>
+                    <End EntitySet="LeakageDetectors" Role="LeakageDetector"/>
+                </AssociationSet>
+                <AssociationSet Name="DeviceFeatureSet" Association="enterNamespace.DeviceFeature">
+                    <End EntitySet="Devices" Role="Device"/>
+                    <End EntitySet="Features" Role="Feature"/>
+                </AssociationSet>
+                <AssociationSet Name="LocationContactSet" Association="enterNamespace.LocationContact">
+                    <End EntitySet="Locations" Role="Location"/>
+                    <End EntitySet="Contacts" Role="Contact"/>
+                </AssociationSet>
+                <AssociationSet Name="LocationDeviceSet" Association="enterNamespace.LocationDevice">
+                    <End EntitySet="Locations" Role="Location"/>
+                    <End EntitySet="Devices" Role="Device"/>
+                </AssociationSet>
+                <AssociationSet Name="LocationProductSet" Association="enterNamespace.LocationProduct">
+                    <End EntitySet="Locations" Role="Location"/>
+                    <End EntitySet="Products" Role="Product"/>
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

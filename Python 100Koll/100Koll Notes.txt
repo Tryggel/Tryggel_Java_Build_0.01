@@ -1,0 +1,34 @@
+Authentification URL
+https://api-nordic.eon.se/neo/oauth/v2/token
+
+An other URL
+https://api-nordic.eon.se/neo/oauth/v2/authorization
+
+
+Get the CODE
+https://api-nordic.eon.se/neo/oauth/v2/authorization?client_id=tryggel&response_type=code&scope=100koll
+
+access_token": "cf5cff37-d6fe-4e72-b185-855d093a831d",
+code: naGbVASGIOg6lKcwg8QZx7cw7ay2cS7x
+Client secret  = 3Cw59$ngUGf#576Dja#y
+
+Client id = tryggel
+
+5: naGbVASGIOg6lKcwg8QZx7cw7ay2cS7x
+5: xAV69dMtjf3pyFB85RO5jQ8Sscam6PNJ
+
+
+url = "http://example.com/photos"
+{{url}}/OlingoProvider.svc/Devices
+
+https://qa-api-nordic.eon.se/api/na/hemmakoll/v3/
+
+
+Python program:
+
+consumer = oauth.Consumer(key="naGbVASGIOg6lKcwg8QZx7cw7ay2cS7x", secret="3Cw59$ngUGf#576Dja#y")
+request_token_url = "https://api-nordic.eon.se/neo/oauth/v2/token"
+client = oauth.Client(consumer)
+resp, content = client.request(request_token_url, "GET")
+
+chrome://settings/cookies

@@ -27,7 +27,7 @@ def handelError ():
 	
 def DevicesWattNow (Authorization):
 	fibaro_server = "127.0.0.1"
-	koll_url_live = 'http://' + fibaro_server + ':8083/ZWaveAPI/Run/devices[4].instances[0].commandClasses[49].data[4].val.value'	
+	koll_url_live = 'http://' + fibaro_server + ':8083/ZWaveAPI/Run/devices[3].instances[0].commandClasses[49].data[4].val.value'	
 	url = koll_url_live
 	res = requests.get(
 		url
@@ -80,7 +80,7 @@ def GettingData():
 	timewait =0.0
 	#List of plags with respective tokens
 	list_token = ['Basic YWRtaW46YW5kYW1vMTU=']
-	device_id = "104"
+	device_id = "103"
 	while True:
 		i = 0
 		#Call for every token
